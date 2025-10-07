@@ -3,6 +3,7 @@ package com.fitness.model;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.annotation.Generated;
@@ -28,14 +29,15 @@ import lombok.ToString;
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+
 	
 	@Column(nullable = false)
 	private String email;
 	private String 	password;
-	private String firstName;
-	private String lastName;
+	private String firstname;
+	private String lastname;
 	
 	@Enumerated(EnumType.STRING)
 	private UserRole role = UserRole.USER;

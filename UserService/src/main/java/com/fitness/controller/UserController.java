@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fitness.dto.RegisterRequest;
 import com.fitness.dto.UserResponse;
 import com.fitness.service.UserService;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -21,11 +24,22 @@ public class UserController {
 	
 	
 	@PostMapping("/save")
-	public ResponseEntity<UserResponse> userSave(@RequestBody RegisterRequest entity) {
-		//TODO: process POST request
-		
+	public ResponseEntity<UserResponse> userSave(@RequestBody RegisterRequest entity) throws Exception {
 		return ResponseEntity.ok(userService.register(entity));
 	}
+	
+	@GetMapping("/getByUser/{id}")
+	public ResponseEntity<UserResponse> userSave(@PathVariable long id) throws Exception {
+		return ResponseEntity.ok(userService.getProfile(id));
+	}
+	
+	@GetMapping("/{id}/validate")
+	public ResponseEntity<Boolean> validateUser(@PathVariable long id) throws Exception {
+		return ResponseEntity.ok(userService.existsByUser(id));
+	}
+	
+	
+	
 	
 
 }

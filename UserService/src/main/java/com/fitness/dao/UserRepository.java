@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.fitness.model.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String>{
+public interface UserRepository extends JpaRepository<User, Long>{
 	
 	boolean existsByEmail(String email);
 

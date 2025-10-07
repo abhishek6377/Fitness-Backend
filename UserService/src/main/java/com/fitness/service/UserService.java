@@ -7,7 +7,9 @@ public interface UserService {
 
 	 UserResponse register(RegisterRequest entity) throws Exception;
 	 
-	 UserResponse  getProfile(String userid);
+	 UserResponse  getProfile(long userid);
+	 
+	 boolean existsByUser(long userid);
 	
 	
 

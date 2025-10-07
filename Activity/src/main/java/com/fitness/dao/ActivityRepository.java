@@ -1,7 +1,16 @@
 package com.fitness.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ActivityRepository  extends JpaRepository<ActivityRepository, String>{
+import java.util.List;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+import com.fitness.model.Activity;
+
+@Repository
+public interface ActivityRepository extends MongoRepository<Activity, String> {
+    // List<Activity> findByType(String type);
+	
+	List<Activity> findByUserId(String userId);
 }
