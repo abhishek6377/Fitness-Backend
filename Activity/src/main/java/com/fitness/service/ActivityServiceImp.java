@@ -20,6 +20,8 @@ public class ActivityServiceImp implements ActivityService {
 	private ActivityRepository activityRepository;
 	
 	private UserValidateService service;
+	
+	
 
 	@Override
 	public ActivityResponse trackActivity(ActivityRequest activityRequest) {
