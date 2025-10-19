@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bouncycastle.crypto.RuntimeCryptoException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.kafka.KafkaConnectionDetails;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.fitness.dao.ActivityRepository;
@@ -14,14 +17,25 @@ import com.fitness.model.Activity;
 import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor
+//@AllArgsConstructor
 public class ActivityServiceImp implements ActivityService {
 	
+	
+	@Value("${kafka.topic.name}")
+	private String topicName;
+	
 	private ActivityRepository activityRepository;
-	
 	private UserValidateService service;
-	
-	
+	private KafkaTemplate<String, Activity> kafkaTemplate;
+
+	public ActivityServiceImp(ActivityRepository activityRepository, UserValidateService service,
+			KafkaTemplate<String, Activity> kafkaTemplate) {
+		this.activityRepository = activityRepository;
+		this.service = service;
+		this.kafkaTemplate = kafkaTemplate;
+	}
+
+
 
 	@Override
 	public ActivityResponse trackActivity(ActivityRequest activityRequest) {
@@ -43,13 +57,16 @@ public class ActivityServiceImp implements ActivityService {
 //		activity.setStDateTime(activityRequest.getStDateTime());
 //		activity.setUpdatedAt(activityRequest.getUpdatedAt());
 		
-		
 		Activity save = activityRepository.save(activity);
-		
 		if(save==null) return null;
 		
-		ActivityResponse activityResponse  = new ActivityResponse();
+		try {
+			kafkaTemplate.send(topicName,save.getUserId(),save);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
+		ActivityResponse activityResponse  = new ActivityResponse();
 		activityResponse.setActivitytype(save.getActivitytype());
 		activityResponse.setCaloriesburned(save.getCaloriesburned());
 		activityResponse.setDuration(save.getDuration());
