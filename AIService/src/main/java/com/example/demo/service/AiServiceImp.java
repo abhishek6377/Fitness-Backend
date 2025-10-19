@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AiServiceImp implements AIService {
 	
-	private AIRepository aiRepository;
+	private final AIRepository aiRepository;
 
 	@Override
 	public List<Recommadation> getUserRecommadation(String userid) {
